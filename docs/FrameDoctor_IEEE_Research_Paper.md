@@ -10,16 +10,16 @@ FrameDoctor Research Group · iQOO Hackathon 2026 (Chennai City Battle)
 ### Abstract
 Maintaining deterministic frame pacing on ultra-high-refresh mobile displays (144 Hz) requires application rendering pipelines to adhere strictly to a **6.944 ms** presentation deadline ($\Delta t_{\text{max}}$). Traditional performance profiling suites—such as Android Studio Profiler, Perfetto, and Systrace—exhibit substantial operational limitations in mobile environments: they necessitate tethered host workstations, rely on command-line instrumentation over ADB, and inherently distort device thermal equilibrium through concurrent USB power delivery (VBUS). Furthermore, standard evaluation metrics like cumulative average Frames Per Second ($\overline{\text{FPS}}$) obscure micro-stutters and hitch clusters.
 
-In this paper, we introduce **FrameDoctor**, an untethered, on-device telemetry and diagnostic architecture tailored for heterogeneous flagship SoCs (specifically the Qualcomm Snapdragon 8 Elite and Adreno 830 GPU on the vivo/iQOO 15). FrameDoctor implements hardware-synchronized VSync sampling via Android's `Choreographer.FrameCallback`, non-intrusive operating system thermal state classification via `PowerManager`, and 300 Hz digitizer input tracking. We formulate the **Peak Jitter Index (PJI)**, a variance-sensitive statistical operator that isolates high-frequency temporal pacing instability down to the sub-millisecond domain, paired with a deterministic startup transient discard filter. 
+In this paper, we introduce **FrameDoctor**, an untethered, on-device telemetry and diagnostic architecture tailored for heterogeneous flagship SoCs (specifically the Qualcomm Snapdragon 8 Elite and Adreno 830 GPU on the vivo/iQOO 15). FrameDoctor was conceived to address the **Developer Tools Track** of the **iQOO Hackathon 2026 (Chennai City Battle)**. The system implements hardware-synchronized VSync sampling via Android's `Choreographer.FrameCallback`, non-intrusive operating system thermal state classification via `PowerManager`, and 300 Hz digitizer input tracking. We formulate the **Peak Jitter Index (PJI)**, a variance-sensitive statistical operator that isolates high-frequency temporal pacing instability down to the sub-millisecond domain, paired with a deterministic startup transient discard filter. 
 
-Beyond observation, the architecture features an automated code remediation engine that analyzes runtime trace bottlenecks and synthesizes platform-specific mitigations—including Adreno ALU 16-bit vector demotion (`mediump`) and fragment derivative throttling. Diagnostic reports are bridged seamlessly to host development environments using the **vivo Office Kit** cross-device protocol without tethering. Empirical validation demonstrates that FrameDoctor executes with an observer-effect overhead of less than 0.38% CPU utilization and zero runtime garbage collection allocations, providing developers with clinical performance intelligence directly on the device under test.
+Beyond passive observation, the architecture features an automated code remediation engine that analyzes runtime trace bottlenecks and synthesizes platform-specific mitigations—including Adreno ALU 16-bit vector demotion (`mediump`) and fragment derivative throttling. Diagnostic reports are bridged seamlessly to host development environments using the **vivo Office Kit** cross-device protocol without physical tethering. Empirical validation demonstrates that FrameDoctor executes with an observer-effect overhead of less than 0.38% CPU utilization and zero runtime garbage collection allocations, providing developers with clinical performance intelligence directly on the device under test.
 
 #### Index Terms
 Mobile Computing, Frame Pacing, 144 Hz Refresh Rate, Qualcomm Adreno GPU, VSync Telemetry, Thermal Throttling, Dynamic Voltage and Frequency Scaling (DVFS), Performance Diagnostic Engines, Cross-Device Ecosystems.
 
 ---
 
-## I. Introduction
+## I. Introduction and Hackathon Problem Formulation
 
 The mobile gaming and interactive visual computing ecosystem is undergoing a generational shift toward ultra-high-refresh display hardware. Flagship smartphones, exemplified by the vivo/iQOO 15, now integrate 2K AMOLED panels operating at refresh frequencies of up to **144 Hz**. While high refresh rates yield fluid visual transitions and reduced touch-to-presentation latency, they impose severe physical constraints upon the underlying graphics pipeline.
 
@@ -29,20 +29,47 @@ $$\Delta t_{\text{max}} = \frac{1000}{144} \approx 6.944\text{ ms} \label{eq:bud
 
 A single frame latency transgression of merely $0.15\text{ ms}$ ($t_{\text{frame}} = 7.10\text{ ms}$) forces the display engine's hardware compositor (`SurfaceFlinger`) to miss the vertical blanking interval (VBLANK), holding the prior framebuffer for an additional refresh cycle. This halves the instantaneous presentation rate to 72 FPS, generating perceptually disruptive micro-stutter [1].
 
-### A. Deficiencies of Existing Profiling Paradigms
-Existing mobile profiling methodologies fall into two categories, both of which exhibit fundamental structural flaws:
+---
 
-1. **Desktop-Tethered Trace Infrastructures**: Tools such as Google Perfetto [2], Simpleperf [3], and Android Studio Profiler require physical USB connections to a stationary workstation. This tethering model is infeasible in mobile validation environments—such as transport testing, competitive e-sports labs, or hackathon "Red Light" evaluations. More critically, constant electrical power supplied over the USB VBUS line generates artificial Joule heating within the device chassis, distorting the passive thermal dissipation profile and invalidating thermal throttling benchmarks.
-2. **Coarse-Grained Telemetry and Vanity Metrics**: Cloud-based performance SDKs and game benchmark utilities consistently aggregate frame times into arithmetic mean frame rates ($\overline{\text{FPS}}$). As proven in Section II-B, $\overline{\text{FPS}}$ fails to register transient hitch clusters, allowing unstable rendering loops with severe micro-stutter to report seemingly compliant metric baselines.
+### A. Hackathon Problem Statement (PS) Specification
+* **Hackathon**: iQOO Hackathon 2026 · Chennai City Battle.
+* **Track**: Developer Tools & Device Optimization.
+* **Core Challenge / Problem Statement (PS)**: *On-Device Performance, Thermal, and Frame-Pacing Diagnostics for High-Refresh Flagship Hardware (iQOO 15)*.
+* **The Operational Mandate**:
+  Campus developers, indie game creators, and mobile UI engineers frequently ship janky, stutter-prone applications on flagship hardware because existing performance profilers live on heavy laptops that are physically unavailable in mobile environments—such as testing on public transport, in student labs, or during competitive hackathon offline ("Red Light") phases. Furthermore, cloud-based "AI debug" tools have zero visibility into physical SoC sensors, and traditional desktop profilers distort the very hardware metrics they aim to measure. The mandate was to build a zero-tether, phone-first diagnostic suite that turns the loaner iQOO 15 into an autonomous performance laboratory and bridges the resulting intelligence directly to developer PCs via vivo's ecosystem.
 
-### B. Core Technical Contributions
-To resolve these engineering bottlenecks, this paper presents **FrameDoctor**, an untethered, zero-overhead diagnostic suite operating directly within the target execution sandbox. The specific contributions of this work are:
+---
 
-* **Hardware-Bound Sensor Integration**: We design a native platform bridge capturing true nanosecond-accurate presentation timestamps via `android.view.Choreographer`, platform thermal daemon states via `PowerManager`, battery drain via `BatteryManager`, and 300 Hz touch digitizer input lag without requiring root privileges.
-* **Mathematical Modeling of Frame Stability**: We define and derive the **Peak Jitter Index (PJI)**, a root-mean-square statistical operator that quantifies high-frequency pacing instability, integrated with a **Startup Transient Discard Filter** that mathematically eliminates JIT compilation and pipeline state object (PSO) mounting spikes.
-* **Automated Architectural Code Remediation**: We implement an on-device rule synthesis engine that dynamically evaluates trace signatures and generates hardware-tailored code optimizations—such as half-precision FP16 register allocation for Qualcomm Adreno vector units and fragment derivative approximations.
-* **Untethered Ecosystem Bridge via vivo Office Kit**: We establish an asynchronous data-drop protocol leveraging Android's `MediaStore` public storage abstractions and Super Clipboard APIs to pipe rich markdown dossiers, Jira issues, and Perfetto trace interchange files onto developer workstations with zero cable tethering.
-* **Empirical Validation**: We validate FrameDoctor across simulated graphics workloads (WebGL 3D fragment loops, DOM layout thrashing, and 18,000 instanced GPU primitives), demonstrating sub-0.4% CPU overhead, zero runtime garbage-collection allocations, and validated diagnostic integrity.
+### B. System Identity: Exactly What We Are Making
+To fulfill this mandate, we engineered **FrameDoctor**: an on-device, sub-millisecond performance stethoscope and dual-surface cross-device laboratory tailored for the iQOO 15.
+
+FrameDoctor is **not** a cloud chatbot wrapper, **not** an abstract website, and **not** an intrusive rooting tool. The **Device Under Test (DUT) is the product itself**. The complete system delivered consists of four integrated components:
+
+1. **The Mobile Test Rig (`client/src/screens/Phone.jsx` & `android/`)**: An instrumented application running directly on the iQOO 15. It incorporates three deterministic graphics stress workloads (`WebGLMesh`, `DOMFeed`, `TriangleMesh`) and an on-demand GPU stress injector (`OverdrawBomb`), running alongside an ultra-low-overhead real-time HUD.
+2. **The Hardware Sensor Layer (`android/NativeBridge.kt`)**: A zero-root Kotlin bridge interfacing directly with Android's `Choreographer` (for nanosecond VSync timestamps), `PowerManager` (for official OS thermal throttling states), `BatteryManager` (for instantaneous current draw), and the display digitizer (for 300 Hz touch latency).
+3. **The Local Diagnostic & Code Remediation Engine (`shared/analyze.mjs`)**: An offline-first statistical and heuristic engine that filters startup transients, computes the **Peak Jitter Index (PJI)**, detects hitch clusters, and synthesizes copy-pasteable shader and layout code patches targeting the Snapdragon 8 Elite and Adreno 830 GPU.
+4. **The Laptop Companion Desk (`client/src/screens/Desk.jsx`)**: A host workstation dashboard connected via LAN and **vivo Office Kit**. It features a live latency seismograph, remote overdraw stress controls, and a verified drop parser that cryptographically confirms cross-device file transfers.
+
+---
+
+### C. The Concrete Problems We Are Solving
+FrameDoctor systematically resolves five critical friction points that cripple mobile performance engineering:
+
+1. **The 6.944 ms VSync Boundary & Micro-Stutter Paradox**: At 144 Hz, developers have no margin for error. Conventional tools cannot isolate sub-millisecond temporal spikes occurring within a 6.94 ms frame window.
+2. **The Physical Desktop-Tether Barrier**: Traditional profilers (Android Studio Profiler, Perfetto, Systrace) require a physical workstation, USB cables, and persistent ADB authorization. This creates a severe barrier for developers working in mobile, campus, or field testing scenarios.
+3. **Thermal & Electrical Distortion via USB Power Delivery (VBUS)**: When a phone is tethered to a laptop over USB, the continuous charging current introduces external Joule heating into the device chassis ($P = I^2 R$). This artificially elevates battery temperature, forces premature DVFS thermal throttling, and pollutes battery coulometry benchmarks.
+4. **The Deception of Cumulative Average FPS**: Commercial benchmarks aggregate performance into arithmetic average frame rate ($\overline{\text{FPS}}$). As proven mathematically in Section II-B, an application can report 141 FPS while experiencing multi-frame 100 ms hitch clusters that freeze the display.
+5. **The Actionability Gap (Diagnosis Without Remediation)**: Existing profiling tools dump millions of raw trace lines or dense timelines, leaving junior developers clueless regarding *how* to optimize their code. FrameDoctor bridges this gap by automatically synthesizing architectural code patches.
+
+---
+
+### D. The Proposed Solution: Four Architectural Pillars
+To address these problems, FrameDoctor introduces an architecture grounded in four foundational pillars:
+
+* **Pillar 1 — Hardware-Bound Non-Root Sensor Fusion**: We bypass high-level browser abstractions to sample nanosecond VSync presentation deltas via `Choreographer.FrameCallback`, platform thermal governor transitions via `PowerManager.OnThermalStatusChangedListener`, and 300 Hz touch digitizer input latency without requiring root privileges.
+* **Pillar 2 — Mathematical Pacing & Stability Engine**: We replace deceptive average FPS metrics with a mathematically rigorous statistical engine incorporating a **Startup Transient Warmup Discard Filter** (stripping initial PSO compilation spikes) and the **Peak Jitter Index (PJI)** (quantifying high-frequency pacing variance).
+* **Pillar 3 — Automated Architectural Code Remediation**: We couple trace analysis with an on-device code generation engine that synthesizes concrete, copy-pasteable patches—such as 16-bit FP16 register demotion (`mediump`) to double ALU throughput on Qualcomm Adreno 830 GPUs and layout reflow batching for WebKit compositors.
+* **Pillar 4 — The vivo Office Kit Cross-Device Ecosystem Bridge**: We establish a zero-tether file export pipeline utilizing Android's public `MediaStore` abstractions (`FileDropHelper.kt`). Developers run tests on the phone, generate markdown dossiers, and drag-and-drop or Super-Clipboard the trace directly to their laptop companion desk via **vivo Office Kit**.
 
 ---
 
