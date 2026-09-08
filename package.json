@@ -1,0 +1,30 @@
+{
+  "name": "framedoctor",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n lab,ui -c yellow,cyan \"node server/index.mjs\" \"vite --config client/vite.config.js\"",
+    "server": "node server/index.mjs",
+    "client": "vite --config client/vite.config.js",
+    "test": "node shared/smoke.mjs",
+    "build": "vite build --config client/vite.config.js",
+    "build:android": "vite build --config client/vite.config.js && node scripts/copy-www.mjs"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "gsap": "^3.13.0",
+    "puppeteer-core": "^25.10.0",
+    "qrcode": "^1.5.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.2",
+    "concurrently": "^9.1.2",
+    "vite": "^6.3.5"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "errors": [],
+  "notes": [
+    "shot 01-home-phone",
+    "HOME {\n  \"overflow\": {\n    \"bodyScrollW\": 390,\n    \"clientW\": 390,\n    \"phoneH\": 844,\n    \"homeScroll\": 807,\n    \"homeClient\": 807\n  },\n  \"buttons\": [\n    {\n      \"text\": \"WebGL mesh Icosphere · fragment fill\",\n      \"disabled\": false,\n      \"w\": 354,\n      \"h\": 48\n    },\n    {\n      \"text\": \"DOM feed List app · layout thrash\",\n      \"disabled\": false,\n      \"w\": 354,\n      \"h\": 48\n    },\n    {\n      \"text\": \"GPU triangles 18k tris · Adreno\",\n      \"disabled\": false,\n      \"w\": 354,\n      \"h\": 48\n    },\n    {\n      \"text\": \"144 Hz\",\n      \"disabled\": false,\n      \"w\": 76,\n      \"h\": 36\n    },\n    {\n      \"text\": \"60 Hz\",\n      \"disabled\": false,\n      \"w\": 76,\n      \"h\": 36\n    },\n    {\n      \"text\": \"START SESSION\",\n      \"disabled\": false,\n      \"w\": 354,\n      \"h\": 60\n    }\n  ],\n  \"h1\": \"FRAME\\nDOCTOR\",\n  \"pills\": [\n    \"Browser · online\",\n    \"DEVELOPER TOOLS · CHENNAI\",\n    \"BROWSER\",\n    \"60 HZ\",\n    \"ONLINE\"\n  ],\n  \"overlapping\": [],\n  \"title\": \"FrameDoctor · iQOO 15 lab\"\n}",
+    "shot 02-stress-webgl",
+    "STRESS {\n  \"overflow\": {\n    \"bodyScrollW\": 390,\n    \"clientW\": 390,\n    \"phoneH\": 844,\n    \"homeScroll\": null,\n    \"homeClient\": null\n  },\n  \"buttons\": [\n    {\n      \"text\": \"OVERDRAW BOMB\",\n      \"disabled\": false,\n      \"w\": 156,\n      \"h\": 50\n    },\n    {\n      \"text\": \"STOP & DIAGNOSE\",\n      \"disabled\": false,\n      \"w\": 202,\n      \"h\": 50\n    }\n  ],\n  \"pills\": [\n    \"Browser · online\"\n  ],\n  \"hud\": \"144 HZ · WEBGL MESH\\n2.3S\\n130\\nFPS\\n6.9\\nFRAME MS\\n±1.5\\nPJI\\n5%\\nEST. LOAD\",\n  \"overlapping\": [],\n  \"title\": \"FrameDoctor · iQOO 15 lab\"\n}",
+    "shot 03-stress-bomb",
+    "shot 04-report",
+    "REPORT {\n  \"overflow\": {\n    \"bodyScrollW\": 390,\n    \"clientW\": 390,\n    \"phoneH\": 844,\n    \"homeScroll\": null,\n    \"homeClient\": null\n  },\n  \"buttons\": [\n    {\n      \"text\": \"SAVE .MD TO DOWNLOADS\",\n      \"disabled\": false,\n      \"w\": 354,\n      \"h\": 60\n    },\n    {\n      \"text\": \"SUPER CLIPBOARD\",\n      \"disabled\": false,\n      \"w\": 173,\n      \"h\": 44\n    },\n    {\n      \"text\": \"RUN AGAIN\",\n      \"disabled\": false,\n      \"w\": 173,\n      \"h\": 44\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 87,\n      \"h\": 32\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 87,\n      \"h\": 32\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 87,\n      \"h\": 32\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 82,\n      \"h\": 28\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 60,\n      \"h\": 25\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 72,\n      \"h\": 25\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 54,\n      \"h\": 25\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 42,\n      \"h\": 25\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 184,\n      \"h\": 44\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 137,\n      \"h\": 44\n    },\n    {\n      \"text\": \"\",\n      \"disabled\": false,\n      \"w\": 105,\n      \"h\": 42\n    }\n  ],\n  \"h1\": \"DIAGNOSTIC\",\n  \"pills\": [\n    \"Browser · online\",\n    \"RUN_1FW2 · SHADER3D · RAF\",\n    \"\"\n  ],\n  \"overlapping\": [],\n  \"title\": \"FrameDoctor · iQOO 15 lab\"\n}",
+    "shot 05-desk-desktop",
+    "DESK {\n  \"overflow\": {\n    \"bodyScrollW\": 1280,\n    \"clientW\": 1280,\n    \"phoneH\": null,\n    \"homeScroll\": null,\n    \"homeClient\": null\n  },\n  \"buttons\": [\n    {\n      \"text\": \"Reset Lab\",\n      \"disabled\": false,\n      \"w\": 85,\n      \"h\": 32\n    },\n    {\n      \"text\": \"Copy\",\n      \"disabled\": false,\n      \"w\": 48,\n      \"h\": 26\n    },\n    {\n      \"text\": \"Download\",\n      \"disabled\": false,\n      \"w\": 75,\n      \"h\": 26\n    },\n    {\n      \"text\": \"Copy\",\n      \"disabled\": false,\n      \"w\": 48,\n      \"h\": 26\n    },\n    {\n      \"text\": \"Download\",\n      \"disabled\": false,\n      \"w\": 75,\n      \"h\": 26\n    },\n    {\n      \"text\": \"Copy\",\n      \"disabled\": false,\n      \"w\": 48,\n      \"h\": 26\n    },\n    {\n      \"text\": \"Download\",\n      \"disabled\": false,\n      \"w\": 75,\n      \"h\": 26\n    },\n    {\n      \"text\": \"OVERDRAW BOMB\",\n      \"disabled\": false,\n      \"w\": 356,\n      \"h\": 44\n    },\n    {\n      \"text\": \"144 HZ BUDGET\",\n      \"disabled\": false,\n      \"w\": 356,\n      \"h\": 44\n    },\n    {\n      \"text\": \"REMOTE STOP\",\n      \"disabled\": false,\n      \"w\": 356,\n      \"h\": 44\n    },\n    {\n      \"text\": \"Copy\",\n      \"disabled\": false,\n      \"w\": 40,\n      \"h\": 19\n    }\n  ],\n  \"h1\": \"DESK\",\n  \"pills\": [\n    \"LAPTOP COMPANION · NOT OFFICE KIT\",\n    \"THIS SESSION VS 144 HZ BUDGET\",\n    \"LAN CO-PILOT\",\n    \"LAB COUNTERS (SELF-REPORTED)\",\n    \"LIVE PHONE\",\n    \"GREEN LIGHT WI-FI\"\n  ],\n  \"overlapping\": [],\n  \"title\": \"FrameDoctor · iQOO 15 lab\"\n}",
+    "shot 06-desk-mobile",
+    "shot 07-triangles",
+    "shot 08-dom-feed"
+  ],
+  "homeButtons": [
+    {
+      "text": "WebGL mesh Icosphere · fragment fill",
+      "disabled": false,
+      "w": 354,
+      "h": 48
+    },
+    {
+      "text": "DOM feed List app · layout thrash",
+      "disabled": false,
+      "w": 354,
+      "h": 48
+    },
+    {
+      "text": "GPU triangles 18k tris · Adreno",
+      "disabled": false,
+      "w": 354,
+      "h": 48
+    },
+    {
+      "text": "144 Hz",
+      "disabled": false,
+      "w": 76,
+      "h": 36
+    },
+    {
+      "text": "60 Hz",
+      "disabled": false,
+      "w": 76,
+      "h": 36
+    },
+    {
+      "text": "START SESSION",
+      "disabled": false,
+      "w": 354,
+      "h": 60
+    }
+  ],
+  "reportButtons": [
+    {
+      "text": "SAVE .MD TO DOWNLOADS",
+      "disabled": false,
+      "w": 354,
+      "h": 60
+    },
+    {
+      "text": "SUPER CLIPBOARD",
+      "disabled": false,
+      "w": 173,
+      "h": 44
+    },
+    {
+      "text": "RUN AGAIN",
+      "disabled": false,
+      "w": 173,
+      "h": 44
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 87,
+      "h": 32
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 87,
+      "h": 32
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 87,
+      "h": 32
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 82,
+      "h": 28
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 60,
+      "h": 25
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 72,
+      "h": 25
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 54,
+      "h": 25
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 42,
+      "h": 25
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 184,
+      "h": 44
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 137,
+      "h": 44
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "w": 105,
+      "h": 42
+    }
+  ],
+  "deskH1": "DESK"
+}

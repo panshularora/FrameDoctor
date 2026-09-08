@@ -1,0 +1,18 @@
+{
+  "name": "FrameDoctor · iQOO 15 Lab",
+  "short_name": "FrameDoctor",
+  "description": "On-device performance doctor for the iQOO 15",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b0c",
+  "theme_color": "#ff4d1a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+client/dist/
+build/
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+
+# Database & runtime
+data/*.db
+data/*.db-shm
+data/*.db-wal
+*.log
+
+# Environment & Vercel
+.env
+.env.local
+.env.*.local
+.vercel
+
+# System & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
