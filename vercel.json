@@ -5,16 +5,8 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/api/health",
-      "destination": "/api/health.js"
-    },
-    {
-      "source": "/api/network",
-      "destination": "/api/network.js"
-    },
-    {
       "source": "/api/(.*)",
-      "destination": "/api/fallback.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/(.*)",

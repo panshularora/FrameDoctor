@@ -152,6 +152,29 @@ export default function Phone() {
   }, []);
 
   useEffect(() => {
+    if (view !== "stress" || !run?.id) return;
+    const interval = setInterval(async () => {
+      const data = await api.checkControl(run.id);
+      if (!data || !data.action) return;
+      if (data.action === "bomb") {
+        setBomb((v) => {
+          const next = !v;
+          triggerHaptic(next ? "bomb" : "hitch");
+          return next;
+        });
+        showToast("LAN co-pilot: overdraw bomb");
+      } else if (data.action === "mode144") {
+        setMode144(Boolean(data.value));
+        showToast(`LAN co-pilot: ${data.value ? "144 Hz" : "60 Hz"} budget`);
+      } else if (data.action === "stop") {
+        stopRef.current();
+        showToast("LAN co-pilot: stop");
+      }
+    }, 1200);
+    return () => clearInterval(interval);
+  }, [view, run?.id]);
+
+  useEffect(() => {
     if (view !== "stress" || !run) return;
     const id = setInterval(() => {
       const snap = cap.current?.snapshot();

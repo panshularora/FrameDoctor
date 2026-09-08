@@ -183,8 +183,8 @@ export default function Desk() {
   const list = useRef(null);
 
   const refresh = () => {
-    api.inbox().then(setInbox).catch(() => {});
-    api.sessions().then(setSessions).catch(() => {});
+    api.inbox().then((data) => setInbox(Array.isArray(data) ? data : [])).catch(() => {});
+    api.sessions().then((data) => setSessions(Array.isArray(data) ? data : [])).catch(() => {});
     api.liveSession().then(setLive).catch(() => {});
     api.tracker().then(setTracker).catch(() => {});
     api.network().then(setNetwork).catch(() => {});
@@ -192,7 +192,8 @@ export default function Desk() {
 
   useEffect(() => {
     refresh();
-    return subscribe((name, data) => {
+    const interval = setInterval(refresh, 2500);
+    const unsub = subscribe((name, data) => {
       if (name === "live") setLive({ live: data.live, status: "running", id: data.id });
       if (name === "session" && data.status === "complete") {
         setLive(null);
@@ -200,6 +201,10 @@ export default function Desk() {
       }
       if (name === "drop" || name === "session") refresh();
     });
+    return () => {
+      clearInterval(interval);
+      unsub();
+    };
   }, []);
 
   useGSAP(() => {
@@ -251,7 +256,7 @@ export default function Desk() {
     showCopied("Lab sessions cleared for next run");
   };
 
-  const completedSessions = sessions.filter((s) => s.status === "complete").slice(0, 6);
+  const completedSessions = (Array.isArray(sessions) ? sessions : []).filter((s) => s && s.status === "complete").slice(0, 6);
   const lastComplete = completedSessions[0];
   const verifiedDrop = parseOfficeKitDrop(paste);
 
@@ -426,8 +431,8 @@ export default function Desk() {
             <div className="side-box">
               <p className="kicker" style={{ color: "#ff4d1a" }}>Lab counters (self-reported)</p>
               <div className="instruments">
-                <div className="dial"><b>{Math.round(tracker.phone_use_s)}s</b><em>Phone session time</em></div>
-                <div className="dial"><b>{tracker.office_kit_drops}</b><em>Files this lab exported</em></div>
+                <div className="dial"><b>{Math.round(tracker?.phone_use_s || 0)}s</b><em>Phone session time</em></div>
+                <div className="dial"><b>{tracker?.office_kit_drops || 0}</b><em>Files this lab exported</em></div>
               </div>
               <div className="rubric-progress">
                 Real Office Kit score is HackTracker on the loaner, not these dials.
